@@ -35,38 +35,43 @@ const docEl = (function() {
 docEl.outer
 
 
-docEl.dot1.onclick = (event) => { appendPictureWithDot(docEl.dot1, docEl.pic1)};
-docEl.dot2.onclick = (event) => { appendPictureWithDot(docEl.dot2, docEl.pic2)};
-docEl.dot3.onclick = (event) => { appendPictureWithDot(docEl.dot3, docEl.pic3)};
-docEl.rightArrow.onclick = () =>  {appendPictureWithArrow('right')};
-docEl.leftArrow.onclick = ()  =>  {appendPictureWithArrow()};
+docEl.dot1.onclick = () => { appendPictureWithDot(docEl.dot1, docEl.pic1)};
+docEl.dot2.onclick = () => { appendPictureWithDot(docEl.dot2, docEl.pic2)};
+docEl.dot3.onclick = () => { appendPictureWithDot(docEl.dot3, docEl.pic3)};
+docEl.rightArrow.onclick = () =>  {appendPictureWithArrow()};
+docEl.leftArrow.onclick = ()  =>  {appendPictureWithArrow('left')};
+let interval = 5000;
 
-  function appendPictureWithDot  (dot, pic) {
-    pic.remove();
-    docEl.inner.prepend(pic);
-    
-    for (element of docEl.dots) {
-      element.style.fill = 'black';
-    };
-    dot.style.fill = 'white';
+function appendPictureWithDot  (dot, pic) {
+  pic.remove();
+  docEl.inner.prepend(pic);
+  
+  for (element of docEl.dots) {
+    element.style.fill = 'black';
+  };
+
+dot.style.fill = 'white';
+clearInterval(intervID);
+intervID = setInterval(appendPictureWithArrow, interval);
   }
 
-  function appendPictureWithArrow (direction) {
-    const currentPic = docEl.inner.firstElementChild;
-    const id = currentPic.getAttribute("id");
-    
-    if  (direction == 'right')  {
-      if (id.slice(-1) == docEl.lastNum) {
-      num = 1;
-    } else  num = parseInt(id.slice(-1)) + 1;
-  } else  {
-      if (id.slice(-1) == 1) {
-      num = docEl.lastNum;
-    } else  num = parseInt(id.slice(-1)) - 1;
-  }
-    const nextPic = document.querySelector(`#pic${num}`);
-    const nextDot = document.querySelector(`#dot${num}`);
+function appendPictureWithArrow (direction) {
+  const currentPic = docEl.inner.firstElementChild;
+  const id = currentPic.getAttribute("id");
+  
+  if  (direction == 'left')  {
+    if (id.slice(-1) == 1) {
+    num = docEl.lastNum;
+  } else  num = parseInt(id.slice(-1)) - 1;
+} else  {
+  if (id.slice(-1) == docEl.lastNum) {
+    num = 1;
+  } else  num = parseInt(id.slice(-1)) + 1;
+}
+  const nextPic = document.querySelector(`#pic${num}`);
+  const nextDot = document.querySelector(`#dot${num}`);
 
-    appendPictureWithDot(nextDot, nextPic)
-  }
+  appendPictureWithDot(nextDot, nextPic)
+}
 
+  let intervID = setInterval(appendPictureWithArrow, interval);
