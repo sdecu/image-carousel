@@ -51,8 +51,8 @@ top: 50%;
   top: 50%;
 }
 
-.dots {
+.dots-div {
   position: absolute;
   bottom: 0;
-  transform: translateX(183%);
+  left: 40%;
 }
